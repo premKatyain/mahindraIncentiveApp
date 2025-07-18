@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ✅ Required for mobile responsiveness -->
     <title>Incentive Calculator</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +21,12 @@
             padding: 2rem;
             margin-top: 3rem;
         }
-        .container{
-            max-width:650px;
-            width: 90%;
-            margin-top: 50px auto;
-            margin-bottom: 50px;
+        .container {
+            max-width: 650px;
+            width: 100%;
+            margin: 50px auto;
+            padding: 15px;
         }
-
         .custom-text {
             color: white;
             font-size: 15px;
@@ -34,73 +34,64 @@
             padding: 0;
             line-height: 1.2;
         }
-
-
-
-        
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="overlay">
-            <h2 class="text-center mb-4">Incentive Calculator</h2>
-            <form method="POST">
-                <div class="mb-3">
-                    <label class="form-label">Enter Cost Price (CP)</label>
-                    <input type="number" step="0.01" name="cp" value="{{ cp }}" class="form-control">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10 col-sm-12">
+                <div class="overlay">
+                    <h2 class="text-center mb-4">Incentive Calculator</h2>
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Enter Cost Price (CP)</label>
+                            <input type="number" step="0.01" name="cp" value="{{ cp }}" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Enter Selling Price (SP)</label>
+                            <input type="number" step="0.01" name="sp" value="{{ sp }}" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dropdown" class="form-label">Choose Rating</label>
+                            <select class="form-select" id="dropdown" name="product" value={{rating}}>
+                                <option value="">-- Select --</option>
+                                <option value="30" {% if product == "30" %}selected{% endif %}>30 kVA | Assured margin=3% | Max. Discount=7%</option>
+                                <option value="58.5" {% if product == "58.5" %}selected{% endif %}>58.5 kVA | Assured margin=3% | Max. Discount=4%</option>
+                                <option value="62.5" {% if product == "62.5" %}selected{% endif %}>62.5 kVA | Assured margin=3% | Max. Discount=4%</option>
+                                <option value="125" {% if product == "125" %}selected{% endif %}>125 kVA | Assured margin=3% | Max. Discount=4%</option>
+                                <option value="200" {% if product == "200" %}selected{% endif %}>200 kVA | Assured margin=2.5% | Max. Discount=4%</option>
+                                <option value="250" {% if product == "250" %}selected{% endif %}>250 kVA | Assured margin=2% | Max. Discount=4%</option>
+                                <option value="320" {% if product == "320" %}selected{% endif %}>320 kVA | Assured margin=2% | Max. Discount=4%</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning w-100 fw-bold">Calculate Incentive</button>
+                        <a href="/" class="btn btn-secondary ms-2">Reset</a>
+
+                        {% if product %}
+                        <h3>
+                            <small class="custom-text">For {{product}} kVA , Max. possible discount= {{max_dis}} %  </small><br>
+                            <small class="custom-text">X= {{cp}} * {{max_dis}}% ={{cp*(max_dis/100)}} </small><br>
+                            <small class="custom-text">Max discount value to secure min {{ens_margin}}% margin (Y) = {{cp}} * {{max_dis-ens_margin}}% ={{cp*(max_dis-ens_margin)/100}} </small><br>
+                            <small class="custom-text">Actual margin value=X-Y={{(cp*max_dis)/100-(cp*(max_dis-ens_margin))/100}} </small>
+                        </h3>
+                        {% endif %}
+                    </form>
+
+                    {% if message %}
+                    <div class="alert alert-info mt-4" role="alert">
+                        {{ message }}
+                    </div>
+                    {% elif result is not none %}
+                    <div class="alert alert-success mt-4" role="alert">
+                        🎯 Incentive required: <strong>{{ result }}%</strong> <br>
+                        Amount: ₹<strong>{{ amount }}</strong> 
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Enter Selling Price (SP)</label>
-                    <input type="number" step="0.01" name="sp" value="{{ sp }}" class="form-control">
-                </div>
-                <div class="mb-3">
-                    <label for="dropdown" class="form-label">Choose Rating</label>
-                        <select class="form-select" id="dropdown" name="product" value={{rating}}>
-                            <option value="">-- Select --</option>
-                            <option value="30" {% if product == "30" %}selected{% endif %}>30 kVA | Assured margin=3% | Max. Discount=7%</option>
-                            <option value="58.5" {% if product == "58.5" %}selected{% endif %}>58.5 kVA | Assured margin=3% | Max. Discount=4%</option>
-                            <option value="62.5" {% if product == "62.5" %}selected{% endif %}>62.5 kVA | Assured margin=3% | Max. Discount=4%</option>
-                            <option value="125" {% if product == "125" %}selected{% endif %}>125 kVA | Assured margin=3% | Max. Discount=4%</option>
-                            <option value="200" {% if product == "200" %}selected{% endif %}>200 kVA | Assured margin=2.5% | Max. Discount=4%</option>
-                            <option value="250" {% if product == "250" %}selected{% endif %}>250 kVA | Assured margin=2% | Max. Discount=4%</option>
-                            <option value="320" {% if product == "320" %}selected{% endif %}>320 kVA | Assured margin=2% | Max. Discount=4%</option>
-                        </select>
-                </div>
-
-        
-                <button type="submit" class="btn btn-warning w-100 fw-bold">Calculate Incentive</button>
-                <!-- RESET BUTTON -->
-                 <a href="/" class="btn btn-secondary ms-2">Reset</a>
-
-                {% if product%}
-                    <h3>
-                        <small class="custom-text">For {{product}} kVA , Max. possible discount= {{max_dis}} %  </small><br>
-                        <small class="custom-text">X= {{cp}} * {{max_dis}}% ={{cp*(max_dis/100)}} </small><br>
-                        <small class="custom-text">Max discount value to secure min {{ens_margin}}% margin (Y) = {{cp}} * {{max_dis-ens_margin}}% ={{cp*(max_dis-ens_margin)/100}} </small><br>
-                        <small class="custom-text">Actual margin value=X-Y={{(cp*max_dis)/100-(cp*(max_dis-ens_margin))/100}} </small>
-
-                    </h3>
-                {% endif%}
-
-                
-
-                
-            </form>
-
-            {% if message %}
-                <div class="alert alert-info mt-4" role="alert">
-                    {{ message }}
-                </div>
-            {% elif result is not none %}
-                <div class="alert alert-success mt-4" role="alert">
-                    🎯 Incentive required: <strong>{{ result }}%</strong> <br>
-                    Amount: ₹<strong>{{ amount }}</strong> 
-                </div>
-            {% endif %}
+            </div>
         </div>
     </div>
-
-    
 
     <!-- Bootstrap JS (optional) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
