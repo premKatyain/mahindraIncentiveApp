@@ -16,21 +16,21 @@
             color:white;
         }
         .overlay {
-            background-color: rgba(79, 8, 8, 0.8);
+            background-color: rgba(253, 243, 243,0);
             border-radius: 15px;
             padding: 2rem;
             margin-top: 3rem;
         }
         .container {
-            max-width: 650px;
+            max-width: 850px;
             width: 100%;
             margin: 50px auto;
             padding: 15px;
         }
         .custom-text {
-            color: white;
-            font-size: 15px;
-            margin: 0;
+            color: black;
+            font-size: 13px;
+            margin: 0;s
             padding: 0;
             line-height: 1.2;
         }
@@ -41,7 +41,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10 col-sm-12">
                 <div class="overlay">
-                    <h2 class="text-center mb-4">Incentive Calculator</h2>
+                    <h2 class="text-center mb-4" color:rgba(255,0,0)>Incentive Calculator</h2>
                     <form method="POST">
                         <div class="mb-3">
                             <label class="form-label">Enter Cost Price (CP)</label>
@@ -69,12 +69,14 @@
                         <a href="/" class="btn btn-secondary ms-2">Reset</a>
 
                         {% if product %}
-                        <h3>
-                            <small class="custom-text">For {{product}} kVA , Max. possible discount= {{max_dis}} %  </small><br>
-                            <small class="custom-text">X= {{cp}} * {{max_dis}}% ={{cp*(max_dis/100)}} </small><br>
-                            <small class="custom-text">Max discount value to secure min {{ens_margin}}% margin (Y) = {{cp}} * {{max_dis-ens_margin}}% ={{cp*(max_dis-ens_margin)/100}} </small><br>
-                            <small class="custom-text">Actual margin value=X-Y={{(cp*max_dis)/100-(cp*(max_dis-ens_margin))/100}} </small>
-                        </h3>
+                        <div class="alert alert-info mt-4" role="alert">
+                            <h3>
+                                <small class="custom-text">For {{product}} kVA , Max. possible discount= {{max_dis}} %  </small><br>
+                                <small class="custom-text">X= {{cp}} * {{max_dis}}% ={{cp*(max_dis/100)}} </small><br>
+                                <small class="custom-text">Max discount value to secure min {{ens_margin}}% margin (Y) = {{cp}} * {{max_dis-ens_margin}}% ={{cp*(max_dis-ens_margin)/100}} </small><br>
+                                <small class="custom-text">Actual margin value=X-Y={{(cp*max_dis)/100-(cp*(max_dis-ens_margin))/100}} </small>
+                            </h3>
+                        </div>
                         {% endif %}
                     </form>
 
