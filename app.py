@@ -40,7 +40,7 @@ def index():
             if rating in ['58.5','62.5','125']:
                 ens_margin=3
                 max_dis=4
-            if rating in ['250','350']:
+            if rating in ['250','320']:
                 ens_margin=2
                 max_dis=4
             if rating=='200':
