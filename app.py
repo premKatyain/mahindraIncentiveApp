@@ -25,6 +25,7 @@ def index():
     result = None
     amount = None
     message = ""
+    rating = None
     cp = sp = ens_margin = max_dis = 0.0
     #bg_image = random.choice(bg_images)
 
